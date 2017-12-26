@@ -36,11 +36,15 @@ def upload():
 
 	return list_all_companies
 
+
+#--------------------------------------------------------------
+# Brute Force Solution
+
 # finds all possible permutations of companies
 def findAllCombos(list_all_companies):
 	all_combos = []
 	for size in range(1, len(list_all_companies) + 1):
-		combos = itertools.combinations(list_all_companies, size)
+		combos = itertools.combinations(list_all_companies, size) #runtime: O(n^2)
 		for combo in combos:
 			all_combos.append(combo)
 
@@ -84,5 +88,23 @@ def main():
 		print(x)
 
 main()
+
+#--------------------------------------------------------------
+
+"""
+Approach 2: Better Runtime
+
+1. Eliminate all companies that go over the total amount of mateiral
+   Return list of leftover companies
+
+2. Go through remaining combinations, stopping a branch when it goes over
+
+A --> AB --> ABC (disqualified)
+  --> AC --> ACD --> ACDE
+         --> ACE (disqualified)
+  --> AD --> ADE
+
+"""
+
 
 
