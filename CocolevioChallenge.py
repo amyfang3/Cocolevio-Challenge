@@ -10,7 +10,7 @@ class Company():
 		self.profit = amount * price
 
 	def __str__(self):
-		string = "Company " + self.name
+		string = "Company" + self.name
 		return string
 
 # consolidating data about companies into a list of objects from a csv file
@@ -47,22 +47,26 @@ def findAllCombos(list_all_companies):
 	return all_combos
 
 # calculates the highest profit and returns a list of company names
-def maxProfit(total_amount_material, list_all_companiesl):
+def maxProfit(total_amount_material, list_all_companies):
 	all_combos = findAllCombos(list_all_companies)
 	max_combo = 0
 	max_profit = 0
 
-	for combo in combos:
+	# checks each combo
+	for combo in all_combos:
 		total_amount = 0
 		total_profit = 0
 
+		# adds total amount and total profit
 		for company in combo:
 			total_amount += company.amount
 			total_profit += company.profit
 
+		# if total amount exceeds total amount materials, combo is disqualified
 		if total_amount > total_amount_material:
-			pass
+			continue
 		
+		# if combo's profit is more than max profi so far, replace max combo and max profit
 		if total_profit > max_profit:
 			max_profit = total_profit
 			max_combo = combo
@@ -74,9 +78,10 @@ def maxProfit(total_amount_material, list_all_companiesl):
 
 def main():
 	list_all_companies = upload()
-	totalAmountMaterial = eval(input("How much material is there? "))
-	print(findAllCombos(list_all_companies))
-	#print(maximizeProfits(totalAmountMaterial, list_all_companies))
+	total_amount_material = eval(input("How much material is there? "))
+	combo = maxProfit(total_amount_material, list_all_companies)
+	for x in combo:
+		print(x)
 
 main()
 
