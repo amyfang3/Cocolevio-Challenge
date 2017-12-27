@@ -39,6 +39,8 @@ def upload():
 
 #--------------------------------------------------------------
 # Brute Force Solution
+# Time Complexity: O(n^3)
+# Space Complexity: O(n)
 
 # finds all possible permutations of companies
 def findAllCombos(list_all_companies):
@@ -97,14 +99,75 @@ Approach 2: Better Runtime
 1. Eliminate all companies that go over the total amount of mateiral
    Return list of leftover companies
 
-2. Go through remaining combinations, stopping a branch when it goes over
-
-A --> AB --> ABC (disqualified)
-  --> AC --> ACD --> ACDE
-         --> ACE (disqualified)
-  --> AD --> ADE
+2. Sort remaining companies by profit
+3. Fill up until no material left
 
 """
+def function(list_all_companies, total_amount_material):
+	new_list = []
+	total_requested_amount = 0
+
+	# eliminates all individual companies that go over total amount
+	for company in list_all_companies:
+		total_requested_amount += company.amount
+		if company.amount <= total_amount_material:
+			new_list.append(company)
+
+	# if there is not enough material for any individual company
+	if new_list == []:
+		return "Not enough material to satisfy any company's order"
+	# if total amount fulfills only one company's order
+	elif len(new_list) == 1:
+		return new_list[0]
+	# if total amount fulfills all orders
+	elif total_requested_amount <= total_amount_material:
+		return list_all_companies
+	else:
+		# find a combination of companies to maximize profit
+		# sort remaining companies by profit
+
+def mergeSort(alist):
+
+    print("Sorting ", alist)
+    dummy = input("")
+
+    if len(alist) > 1:
+        mid = len(alist) // 2
+        lefthalf = alist[:mid]
+        righthalf = alist[mid:]
+
+        print("Recursive call on left half")
+        mergeSort(lefthalf)
+        print("Recursive call on right half")
+        mergeSort(righthalf)
+
+        i = 0  # index of left list
+        j = 0  # index of the right list
+        k = 0  # index of overall list (passed in as an argument)
+
+        print("merging", lefthalf, "and", righthalf)
+        dummy = input("")
+        while i < len(lefthalf) and j < len(righthalf):
+            if lefthalf[i] < righthalf[j]:
+                alist[k] = lefthalf[i]
+                i += 1
+            else:
+                alist[k] = righthalf[j]
+                j += 1
+            k += 1
+
+        while i < len(lefthalf): # picks up the leftover of the left half if any
+            alist[k] = lefthalf[i]
+            i += 1
+            k += 1
+
+        while j < len(righthalf): # picks up leftovers of the right half if any
+            alist[k] = righthalf[j]
+            j += 1
+            k += 1
+
+        print("result of merge:", alist)
+        dummy = input("")
 
 
 
