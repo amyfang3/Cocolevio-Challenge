@@ -1,6 +1,17 @@
 import itertools
 
-# stores a company's info
+"""
+Solution
+1. Eliminate all companies that go over the total amount of mateiral
+   Return list of leftover companies
+
+2. Sort remaining companies by profit
+3. Add companies until no material left
+
+Time complexity: O(n log n)
+"""
+
+# class to store a company's info
 class Company():
 
 	def __init__(self, name, amount, price):
@@ -36,73 +47,6 @@ def upload():
 
 	return list_all_companies
 
-
-#--------------------------------------------------------------
-# Brute Force Solution
-# Time Complexity: O(n^3)
-
-# finds all possible permutations of companies
-def findAllCombos(list_all_companies):
-	all_combos = []
-	for size in range(1, len(list_all_companies) + 1):
-		combos = itertools.combinations(list_all_companies, size) #runtime: O(n^2)
-		for combo in combos:
-			all_combos.append(combo)
-
-	return all_combos
-
-# calculates the highest profit and returns a list of company names
-def maxProfit(total_amount_material, list_all_companies):
-	all_combos = findAllCombos(list_all_companies)
-	max_combo = 0
-	max_profit = 0
-
-	# checks each combo
-	for combo in all_combos:
-		total_amount = 0
-		total_profit = 0
-
-		# adds total amount and total profit
-		for company in combo:
-			total_amount += company.amount
-			total_profit += company.profit
-
-		# if total amount exceeds total amount materials, combo is disqualified
-		if total_amount > total_amount_material:
-			continue
-		
-		# if combo's profit is more than max profi so far, replace max combo and max profit
-		if total_profit > max_profit:
-			max_profit = total_profit
-			max_combo = combo
-
-	return max_combo
-
-
-
-
-def main():
-	list_all_companies = upload()
-	total_amount_material = eval(input("How much material is there? "))
-	combo = maxProfit(total_amount_material, list_all_companies)
-	for x in combo:
-		print(x)
-
-main()
-
-#--------------------------------------------------------------
-
-"""
-Approach 2: Better Runtime
-
-1. Eliminate all companies that go over the total amount of mateiral
-   Return list of leftover companies
-
-2. Sort remaining companies by profit
-3. Fill up until no material left
-
-Time complexity: O(n log n)
-"""
 
 def maxProfit(list_all_companies, total_amount_material):
 	new_list = []
@@ -173,10 +117,17 @@ def mergeSort(alist):
 
 
 def main():
-	list_all_companies = upload()
+	list_all_companies = upload() # uploads data into program
 	total_amount_material = eval(input("How much material is there? "))
-	combo = maxProfit(list_all_companies, total_amount_material)
-	print("These are the companies for maximum profit:")
-	for x in combo: print(x)
+	while total_amount_material < 0:
+		print("Invalid input. Please try again.")
+		total_amount_material = eval(input("How much material is there? "))
+
+	combo = maxProfit(list_all_companies, total_amount_material) # returns list of companies to obtain max profit
+	if isinstance(combo, str):
+		print(combo)
+	else:
+		print("These are the companies for maximum profit:")
+		for x in combo: print(x)
 
 main()
