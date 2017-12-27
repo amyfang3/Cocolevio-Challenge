@@ -40,7 +40,6 @@ def upload():
 #--------------------------------------------------------------
 # Brute Force Solution
 # Time Complexity: O(n^3)
-# Space Complexity: O(n)
 
 # finds all possible permutations of companies
 def findAllCombos(list_all_companies):
@@ -102,8 +101,10 @@ Approach 2: Better Runtime
 2. Sort remaining companies by profit
 3. Fill up until no material left
 
+Time complexity: O(n log n)
 """
-def function(list_all_companies, total_amount_material):
+
+def maxProfit(list_all_companies, total_amount_material):
 	new_list = []
 	total_requested_amount = 0
 
@@ -125,49 +126,57 @@ def function(list_all_companies, total_amount_material):
 	else:
 		# find a combination of companies to maximize profit
 		# sort remaining companies by profit
+		mergeSort(new_list)
+		new_list.reverse()
 
+		# add companies based off of available materials and most profit
+		final_list = []
+		for company in new_list:
+			if company.amount <= total_amount_material:
+				final_list.append(company)
+				total_amount_material -= company.amount
+
+		return final_list
+		
 def mergeSort(alist):
 
-    print("Sorting ", alist)
-    dummy = input("")
+	if len(alist) > 1:
+		mid = len(alist) // 2
+		lefthalf = alist[:mid]
+		righthalf = alist[mid:]
 
-    if len(alist) > 1:
-        mid = len(alist) // 2
-        lefthalf = alist[:mid]
-        righthalf = alist[mid:]
+		mergeSort(lefthalf)
+		mergeSort(righthalf)
 
-        print("Recursive call on left half")
-        mergeSort(lefthalf)
-        print("Recursive call on right half")
-        mergeSort(righthalf)
+		i = 0  # index of left list
+		j = 0  # index of the right list
+		k = 0  # index of overall list (passed in as an argument)
 
-        i = 0  # index of left list
-        j = 0  # index of the right list
-        k = 0  # index of overall list (passed in as an argument)
+		while i < len(lefthalf) and j < len(righthalf):
+			if lefthalf[i].profit < righthalf[j].profit:
+				alist[k] = lefthalf[i]
+				i += 1
+			else:
+				alist[k] = righthalf[j]
+				j += 1
+			k += 1
 
-        print("merging", lefthalf, "and", righthalf)
-        dummy = input("")
-        while i < len(lefthalf) and j < len(righthalf):
-            if lefthalf[i] < righthalf[j]:
-                alist[k] = lefthalf[i]
-                i += 1
-            else:
-                alist[k] = righthalf[j]
-                j += 1
-            k += 1
+		while i < len(lefthalf): # picks up the leftover of the left half if any
+			alist[k] = lefthalf[i]
+			i += 1
+			k += 1
 
-        while i < len(lefthalf): # picks up the leftover of the left half if any
-            alist[k] = lefthalf[i]
-            i += 1
-            k += 1
-
-        while j < len(righthalf): # picks up leftovers of the right half if any
-            alist[k] = righthalf[j]
-            j += 1
-            k += 1
-
-        print("result of merge:", alist)
-        dummy = input("")
+		while j < len(righthalf): # picks up leftovers of the right half if any
+			alist[k] = righthalf[j]
+			j += 1
+			k += 1
 
 
+def main():
+	list_all_companies = upload()
+	total_amount_material = eval(input("How much material is there? "))
+	combo = maxProfit(list_all_companies, total_amount_material)
+	print("These are the companies for maximum profit:")
+	for x in combo: print(x)
 
+main()
